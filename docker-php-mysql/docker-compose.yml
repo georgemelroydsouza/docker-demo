@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-server-80
+    build:
+      context: ./docker/mysql/
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./db_data/:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=CHANGE_PASS
+      - MYSQL_DATABASE=testdb
+      - MYSQL_USER=george
+      - MYSQL_PASSWORD=test123
+    ports:
+      - "8082:3306"
+      
+  website:
+    container_name: php-website
+    build:
+      context: ./docker/php/
+    volumes:
+      - ./www/:/var/www/
+    ports:
+      - 8000:80
+    depends_on:
+      - mysql
