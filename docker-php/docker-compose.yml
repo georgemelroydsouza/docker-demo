@@ -5,5 +5,7 @@ services:
       context: docker/
     volumes:
       - ./src/:/var/www/
+    environment:
+      - VIRTUAL_HOST=dockerphp.localhost
     ports:
-      - "80:80"
+      - "8000:80"
