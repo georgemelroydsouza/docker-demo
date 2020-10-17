@@ -1,0 +1,5 @@
+docker image build --tag nodejs-app:v1.1 .
+
+docker image ls
+
+docker container run -d --name weather-app1 -p 8081:3000 my-weatherapp:1.0
