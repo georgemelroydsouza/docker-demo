@@ -1,0 +1,32 @@
+version: "3.2"
+services:
+  mongodb:
+    container_name: helpdesk-mongodb
+    image: mongo:4.2.8
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb:/data/db
+      - ./sql/:/tmp/
+  webapi:
+    container_name: helpdeskwebapi
+    build: ./api/
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api/:/usr/src/api
+    links:
+      - mongodb
+    environment:
+      WAIT_HOSTS: mongodb:27017
+  helpdesk:
+    container_name: helpdesk
+    build: ./source/
+    ports:
+      - "1841:1841"
+    volumes:
+      - ./source/:/var/www/
+    links:
+      - webapi
+    environment:
+      WAIT_HOSTS: webapi:8080
